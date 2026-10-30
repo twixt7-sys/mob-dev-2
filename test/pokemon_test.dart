@@ -18,6 +18,21 @@ void main() {
     expect(pokemon.weight, 335);
     expect(pokemon.abilities, contains('swarm'));
     expect(pokemon.types, contains('bug'));
+    expect(pokemon.spriteUrl, endsWith('/black-white/animated/168.gif'));
+  });
+
+  test('Pokemon.fromJson falls back to the still sprite', () {
+    final pokemon = Pokemon.fromJson({
+      'id': 25,
+      'name': 'pikachu',
+      'height': 4,
+      'weight': 60,
+      'abilities': [],
+      'types': [],
+      'sprites': {'front_default': 'https://example.com/25.png'},
+    });
+
+    expect(pokemon.spriteUrl, 'https://example.com/25.png');
   });
 
   test('Pokemon.fromJson rejects data with missing fields', () {

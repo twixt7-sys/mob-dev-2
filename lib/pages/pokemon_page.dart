@@ -264,6 +264,7 @@ class _PokemonPageState extends State<PokemonPage> {
               : Image.network(
                   pokemon.spriteUrl!,
                   fit: BoxFit.contain,
+                  filterQuality: FilterQuality.none,
                   errorBuilder: (_, __, ___) => const Icon(
                     Icons.catching_pokemon,
                     size: 110,

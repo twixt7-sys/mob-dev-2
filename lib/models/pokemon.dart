@@ -20,11 +20,18 @@ class Pokemon {
   /// Creates a Pokemon object from the JSON returned by PokeAPI.
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     final sprites = json['sprites'];
-    final frontSprite = sprites is Map ? sprites['front_default'] : null;
 
-    if (frontSprite != null && frontSprite is! String) {
-      throw const FormatException('The Pokémon sprite has an invalid format.');
-    }
+    // Prefer an animated GIF. The Black/White GIFs only exist up to Gen 5,
+    // so newer Pokémon use the Showdown GIF. Otherwise use the still image.
+    final frontSprite = _stringAt(sprites, [
+          'versions',
+          'generation-v',
+          'black-white',
+          'animated',
+          'front_default',
+        ]) ??
+        _stringAt(sprites, ['other', 'showdown', 'front_default']) ??
+        _stringAt(sprites, ['front_default']);
 
     return Pokemon(
       id: _requiredInt(json, 'id'),
@@ -33,8 +40,18 @@ class Pokemon {
       weight: _requiredInt(json, 'weight'),
       abilities: _namesFromList(json['abilities'], 'ability'),
       types: _namesFromList(json['types'], 'type'),
-      spriteUrl: frontSprite as String?,
+      spriteUrl: frontSprite,
     );
+  }
+
+  /// Follows a list of keys into nested maps and returns the String found
+  /// there, or null if any step is missing or has the wrong type.
+  static String? _stringAt(dynamic value, List<String> keys) {
+    for (final key in keys) {
+      if (value is! Map) return null;
+      value = value[key];
+    }
+    return value is String ? value : null;
   }
 
   static int _requiredInt(Map<String, dynamic> json, String key) {
