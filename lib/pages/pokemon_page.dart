@@ -63,12 +63,14 @@ class _PokemonPageState extends State<PokemonPage> {
       if (!mounted) return;
 
       if (response.statusCode == 404) {
-        _showError('No Pokémon named "$name" was found. Check the spelling and try again.');
+        _showError(
+            'No Pokémon named "$name" was found. Check the spelling and try again.');
         return;
       }
 
       if (response.statusCode != 200) {
-        _showError('The Pokémon service returned error ${response.statusCode}. Try again later.');
+        _showError(
+            'The Pokémon service returned error ${response.statusCode}. Try again later.');
         return;
       }
 
@@ -85,13 +87,17 @@ class _PokemonPageState extends State<PokemonPage> {
         _isLoading = false;
       });
     } on TimeoutException {
-      _showError('The request took too long. Check your connection and try again.');
+      _showError(
+          'The request took too long. Check your connection and try again.');
     } on http.ClientException {
-      _showError('Could not reach the Pokémon service. Check your internet connection and try again.');
+      _showError(
+          'Could not reach the Pokémon service. Check your internet connection and try again.');
     } on FormatException {
-      _showError('The Pokémon service returned data the app could not read. Try again later.');
+      _showError(
+          'The Pokémon service returned data the app could not read. Try again later.');
     } catch (_) {
-      _showError('Could not load this Pokémon. Check your connection and try again.');
+      _showError(
+          'Could not load this Pokémon. Check your connection and try again.');
     }
   }
 
@@ -107,7 +113,9 @@ class _PokemonPageState extends State<PokemonPage> {
   String _displayName(String name) {
     return name
         .split('-')
-        .map((part) => part.isEmpty ? part : '${part[0].toUpperCase()}${part.substring(1)}')
+        .map((part) => part.isEmpty
+            ? part
+            : '${part[0].toUpperCase()}${part.substring(1)}')
         .join(' ');
   }
 
@@ -190,7 +198,8 @@ class _PokemonPageState extends State<PokemonPage> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.info_outline, size: 48, color: Color(0xFFC72D3B)),
+              const Icon(Icons.info_outline,
+                  size: 48, color: Color(0xFFC72D3B)),
               const SizedBox(height: 12),
               Text(
                 _errorMessage!,
@@ -204,7 +213,8 @@ class _PokemonPageState extends State<PokemonPage> {
     }
 
     if (_pokemon == null) {
-      return const Center(child: Text('Search for a Pokémon to see its details.'));
+      return const Center(
+          child: Text('Search for a Pokémon to see its details.'));
     }
 
     return _buildDetails(_pokemon!);
@@ -249,7 +259,8 @@ class _PokemonPageState extends State<PokemonPage> {
           width: 180,
           height: 180,
           child: pokemon.spriteUrl == null
-              ? const Icon(Icons.catching_pokemon, size: 110, color: Color(0xFFC72D3B))
+              ? const Icon(Icons.catching_pokemon,
+                  size: 110, color: Color(0xFFC72D3B))
               : Image.network(
                   pokemon.spriteUrl!,
                   fit: BoxFit.contain,
@@ -285,30 +296,33 @@ class _PokemonPageState extends State<PokemonPage> {
   }
 
   Widget _sectionCard({required String title, required Widget child}) {
-    return Card(
-      elevation: 0,
-      color: Colors.white,
-      margin: const EdgeInsets.only(bottom: 12),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-        side: const BorderSide(color: Color(0xFFE5E1D8)),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Color(0xFF1E3A5F),
+    return SizedBox(
+      width: double.infinity,
+      child: Card(
+        elevation: 0,
+        color: Colors.white,
+        margin: const EdgeInsets.only(bottom: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: const BorderSide(color: Color(0xFFE5E1D8)),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF1E3A5F),
+                ),
               ),
-            ),
-            const SizedBox(height: 12),
-            child,
-          ],
+              const SizedBox(height: 12),
+              child,
+            ],
+          ),
         ),
       ),
     );
