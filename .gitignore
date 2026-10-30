@@ -1,0 +1,10 @@
+# Flutter and Dart generated files
+.dart_tool/
+.packages
+build/
+
+# Local Android and iOS build settings
+android/.gradle/
+android/local.properties
+ios/Flutter/ephemeral/
+ios/Flutter/.last_build_id
